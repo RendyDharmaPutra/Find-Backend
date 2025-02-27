@@ -14,7 +14,7 @@ func AuthController(group fiber.Router, service Service) {
 			return ctx.Status(fiber.StatusBadRequest).JSON(common.NewFailedResponse("Gagal mendaftarkan pengguna", "gagal memproses data yang diberikan"))
 		}
 
-		if err := service.Register(user.Username, user.Password); err != nil {
+		if err := service.Register(user.Fullname, user.Username, user.Password); err != nil {
 			return ctx.Status(fiber.StatusInternalServerError).JSON(common.NewFailedResponse("Gagal mendaftarkan pengguna", err.Error()))
 		}
 

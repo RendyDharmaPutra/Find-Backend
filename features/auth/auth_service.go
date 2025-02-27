@@ -13,8 +13,8 @@ type service struct {
 }
 
 type Service interface {
-	Register(useranme, password string) error
-	Login(useranme, password string) (int, string, error)
+	Register(fullname, username, password string) error
+	Login(username, password string) (int, string, error)
 	Profile(id interface{}) (*user.User, error)
 }
 
@@ -22,7 +22,7 @@ func NewService(repo user.Repository) Service  {
 	return &service{repo: repo}
 }
 
-func (service *service) Register(username, password string) error {
+func (service *service) Register(fullname, username, password string) error {
 	hashedPassword, err := utils.HashPassword(password) 
 	if err != nil {
 		return err
@@ -30,6 +30,7 @@ func (service *service) Register(username, password string) error {
 
 	user := user.User{
 		ID: uuid.New().String(),
+		Fullname: fullname,
 		Username: username,
 		Password: hashedPassword,
 	}

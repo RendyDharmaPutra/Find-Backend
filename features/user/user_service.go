@@ -14,7 +14,7 @@ type service struct {
 type Service interface {
 	GetAllUsers() ([]User, error)
 	GetUser(id string) (*User, error)
-	CreateUser(username, password string) error
+	CreateUser(fullname, username, password string) error
 }
 
 
@@ -41,7 +41,7 @@ func (service *service) GetUser(id string) (*User, error){
 	return user, nil
 }
 
-func (service *service) CreateUser(username, password string) error {
+func (service *service) CreateUser(fullname, username, password string) error {
 	hashedPassword, err := utils.HashPassword(password) 
 	if err != nil {
 		return err
@@ -49,6 +49,7 @@ func (service *service) CreateUser(username, password string) error {
 
 	user := User{
 		ID: uuid.New().String(),
+		Fullname: fullname,
 		Username: username,
 		Password: hashedPassword,
 	}

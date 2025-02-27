@@ -35,6 +35,7 @@ func UserController(group fiber.Router, service Service) {
 
 	group.Post("/", func (ctx *fiber.Ctx) error {
 		var request struct {
+			Fullname string `json:"fullname"`
 			Username string `json:"username"`
 			Password string `json:"password"`
 		}
@@ -42,7 +43,7 @@ func UserController(group fiber.Router, service Service) {
 			return ctx.Status(fiber.StatusBadRequest).JSON(common.NewFailedResponse("Gagal mendaftarkan pengguna",  "hagal memproses data yang diberikan"))
 		}
 
-		if err := service.CreateUser(request.Username, request.Password); err != nil {
+		if err := service.CreateUser(request.Fullname, request.Username, request.Password); err != nil {
 			return ctx.Status(fiber.StatusInternalServerError).JSON(common.NewFailedResponse("Gagal mendaftarkan pengguna", err.Error()))
 		}
 
