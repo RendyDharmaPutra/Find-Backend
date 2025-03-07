@@ -13,6 +13,7 @@ type repository struct {
 
 type Repository interface {
 	FindAll() ([]Person, error)
+	SavePerson(person *Person) error
 }
 
 func NewRepository(db *gorm.DB) Repository {
@@ -35,4 +36,15 @@ func (repo *repository) FindAll() ([]Person, error) {
 	}
 
 	return persons, nil
+}
+
+func (repo *repository) SavePerson(person *Person) error {
+	if err := repo.db.Create(person).Error; err != nil {
+		log.Printf("Error tidak diketahui : %v", err.Error())
+
+
+		return err
+	}
+
+	return nil
 }

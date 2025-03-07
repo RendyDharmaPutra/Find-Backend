@@ -6,6 +6,7 @@ type service struct {
 
 type Service interface {
 	GetAllPersons() ([]Person, error)
+	CreatePerson(person *Person) error
 }
 
 func NewService(repo Repository) Service {
@@ -19,4 +20,12 @@ func (service *service) GetAllPersons() ([]Person, error) {
 	}
 
 	return persons, nil
+}
+
+func (service *service) CreatePerson(person *Person) error {
+	if err := service.repo.SavePerson(person); err != nil {
+		return err
+	}
+
+	return nil
 }
