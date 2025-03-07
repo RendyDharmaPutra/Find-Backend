@@ -2,7 +2,6 @@ package person
 
 import (
 	"Find-Backend/core/common"
-	"fmt"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -22,8 +21,6 @@ func PersonController(group fiber.Router, service Service) {
 		if err := ctx.BodyParser(&person); err != nil {
 			return ctx.Status(fiber.StatusBadRequest).JSON(common.NewFailedResponse("Gagal menambahkan orang", "gagal memproses data yang diberikan"))
 		}
-
-		fmt.Printf("Person: %v\n", person)
 
 		if err := service.CreatePerson(&person); err != nil {
 			return ctx.Status(fiber.StatusInternalServerError).JSON(common.NewFailedResponse("Gagal menambahkan orang", err.Error()))
