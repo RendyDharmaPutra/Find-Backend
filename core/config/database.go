@@ -1,6 +1,7 @@
 package config
 
 import (
+	"Find-Backend/features/person"
 	"Find-Backend/features/user"
 	"log"
 	"os"
@@ -23,7 +24,7 @@ func InitDB() *gorm.DB {
 }
 
 func autoMigrate(db *gorm.DB) {
-	if err := db.AutoMigrate(&user.User{}); err != nil {
+	if err := db.AutoMigrate(&user.User{}, &person.Person{}); err != nil {
 		log.Fatal("Gagal untuk migrasi database, error: ", err)
 	}	
 }

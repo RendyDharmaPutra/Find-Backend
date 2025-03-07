@@ -3,6 +3,7 @@ package routes
 import (
 	"Find-Backend/features/auth"
 	"Find-Backend/features/features_init"
+	"Find-Backend/features/person"
 	"Find-Backend/features/user"
 
 	"github.com/gofiber/fiber/v2"
@@ -16,4 +17,7 @@ func SetupRoutes(app *fiber.App, module *features_init.Module) {
 
 	userGroup := app.Group("/users")
 	user.UserController(userGroup, module.UserService)
+
+	personGroup := app.Group("/person")
+	person.PersonController(personGroup, module.PersonService)
 }
