@@ -5,16 +5,16 @@ type service struct {
 }
 
 type Service interface {
-	GetAllPersons() ([]Person, error)
-	CreatePerson(person *Person) error
+	GetAllPersons(userID interface{}) ([]Person, error)
+	CreatePerson(person *Person, userID interface{}) error
 }
 
 func NewService(repo Repository) Service {
 	return &service{repo: repo}
 }
 
-func (service *service) GetAllPersons() ([]Person, error) {
-	persons, err := service.repo.FindAll()
+func (service *service) GetAllPersons(userID interface{}) ([]Person, error) {
+	persons, err := service.repo.FindAll(map[string]interface{}{"user_id": userID})
 	if err != nil {
 		return nil, err
 	}
@@ -22,7 +22,9 @@ func (service *service) GetAllPersons() ([]Person, error) {
 	return persons, nil
 }
 
-func (service *service) CreatePerson(person *Person) error {
+func (service *service) CreatePerson(person *Person, userID interface{}) error {
+	person.UserID = userID.(string)
+	
 	if err := service.repo.SavePerson(person); err != nil {
 		return err
 	}

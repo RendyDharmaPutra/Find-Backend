@@ -12,7 +12,7 @@ type repository struct {
 }
 
 type Repository interface {
-	FindAll() ([]Person, error)
+	FindAll(filters map[string]interface{}) ([]Person, error)
 	SavePerson(person *Person) error
 }
 
@@ -20,10 +20,14 @@ func NewRepository(db *gorm.DB) Repository {
 	return &repository{db: db}
 }
 
-func (repo *repository) FindAll() ([]Person, error) {
-	var persons []Person
+func (repo *repository) FindAll(filters map[string]interface{}) ([]Person, error) {
+	query := repo.db
+	for key, value := range filters {
+		query = query.Where(key +" = ?", value)
+	}
 
-	if err := repo.db.Find(&persons).Error; err != nil {
+	var persons []Person
+	if err := repo.db.Find(&persons, query).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("pengguna tidak ditemukan")
 		} else {
