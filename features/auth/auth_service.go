@@ -44,7 +44,7 @@ func (service *service) Register(fullname, username, password string) error {
 func (service *service) Login(username, password  string) (int, string, error) {
 	statusCode := 500
 	
-	user, err :=  service.repo.FindOne([]string{"username", "password"}, map[string]interface{}{"Username": username})
+	user, err :=  service.repo.FindOne([]string{"id", "username", "password"}, map[string]interface{}{"Username": username})
 	if err != nil {
 		if err.Error() == "pengguna tidak ditemukan" {
 			statusCode = 400
