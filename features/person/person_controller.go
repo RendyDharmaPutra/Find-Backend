@@ -18,7 +18,7 @@ func PersonController(group fiber.Router, service Service) {
 			return ctx.Status(fiber.StatusInternalServerError).JSON(common.NewFailedResponse("Gagal mendapatkan data orang", err.Error()))
 		}
 
-		return ctx.Status(fiber.StatusOK).JSON(common.NewSuccessResponse("Berhasil mendapatkan data orang", map[string]interface{}{"persons": persons}))
+		return ctx.Status(fiber.StatusOK).JSON(common.NewSuccessResponse("Berhasil mendapatkan data orang", map[string]interface{}{"person": persons}))
 	}) 
 
 	group.Post("/", func (ctx *fiber.Ctx) error {

@@ -25,9 +25,10 @@ func (repo *repository) FindAll(filters map[string]interface{}) ([]Person, error
 	for key, value := range filters {
 		query = query.Where(key +" = ?", value)
 	}
-
+	
+	
 	var persons []Person
-	if err := repo.db.Find(&persons, query).Error; err != nil {
+	if err := repo.db.Select("id", "fullname", "job", "address").Find(&persons, query).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("pengguna tidak ditemukan")
 		} else {

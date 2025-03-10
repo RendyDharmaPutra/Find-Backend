@@ -49,7 +49,7 @@ func (repo *repository) FindOne(filters map[string]interface{}) (*User, error) {
 	}
 	
 	var user User
-	if err := repo.db.First(&user, query).Error; err != nil {
+	if err := repo.db.Select("fullname", "username").First(&user, query).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("pengguna tidak ditemukan")
 		} else {
