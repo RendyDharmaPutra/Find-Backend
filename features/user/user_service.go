@@ -33,7 +33,7 @@ func (service *service) GetAllUsers() ([]User, error) {
 
 func (service *service) GetUser(id string) (*User, error){
 	filters := map[string]interface{}{"id": id,}
-	user, err :=  service.repo.FindOne(filters)
+	user, err :=  service.repo.FindOne([]string{"id", "fullname", "username", "password"}, filters)
 	if err != nil {
 		return nil, err
 	}

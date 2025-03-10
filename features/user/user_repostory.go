@@ -14,7 +14,7 @@ type repository struct {
 
 type Repository interface {
 	FindAll() ([]User, error)
-	FindOne(filters map[string]interface{}) (*User, error)
+	FindOne(col []string, filters map[string]interface{}) (*User, error)
 	SaveUser(user *User) error
 	UpdateUser(id uint, value map[string]interface{}) error
 }
@@ -42,14 +42,15 @@ func (repo *repository) FindAll() ([]User, error) {
 	return users, nil
 }
 
-func (repo *repository) FindOne(filters map[string]interface{}) (*User, error) {	
+func (repo *repository) FindOne(col []string, filters map[string]interface{}) (*User, error) {	
 	query := repo.db
 	for key, value := range filters {
 		query = query.Where(key +" = ?", value)
 	}
 	
+	
 	var user User
-	if err := repo.db.Select("fullname", "username").First(&user, query).Error; err != nil {
+	if err := repo.db.Select(col).First(&user, query).Error; err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			err = errors.New("pengguna tidak ditemukan")
 		} else {
